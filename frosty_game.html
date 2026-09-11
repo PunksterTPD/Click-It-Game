@@ -30,29 +30,88 @@ body {
   font-size: 24px;
   display: none;
 }
+.target {
+  cursor: url(''), auto;   /* forces arrow even on clickable items */
+}
+
+@keyframes glowPulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 0px gold); }
+  50% { transform: scale(1.2); filter: drop-shadow(0 0 20px gold); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 0px gold); }
+}
+
+@keyframes sparkleBurst {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(2); }
+}
+
+.sparkle {
+  position: absolute;display: inline-block;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, gold 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkleBurst 1s ease-out forwards;
+}
+
 </style>
 </head>
 <body>
 
-<h1>Find the Pirate Mark</h1>
+<h1>Find the Pirate Symbol</h1>
 <p>Blackthorn hid a secret symbol somewhere in this scene. Find it!</p>
 
+<div style="text-align: center;">
+  <img src="hidden_image.jpg" alt="Quest Image" width="60" style="margin-bottom:20px;">
+</div>
+
 <div class="game-area">
+
   <img src="frosty_image.jpg" class="game-img">
 
   <!-- Position the target over the hidden spot -->
-  <div class="target" style="top: 320px; left: 540px;" onclick="foundIt()"></div>
+  <div class="target" style="top: 250px; left: 600px;" onclick="foundIt()">
+    </div>
 </div>
 
 <div class="message" id="msg">
   You found the hidden symbol!<br><br>
-  <strong>“Now go find the rune with this view! Oh, and the answer for this rune is _a_ey”</strong>
+  <strong>“Now go find the rune with this view! Oh, and the answer for this rune is _o-_o-_o”</strong>
 </div>
 
 <script>
 function foundIt() {
   document.getElementById("msg").style.display = "block";
 }
+</script>
+<script>
+function foundIt() {
+  const target = document.querySelector('.target');
+  const area = document.querySelector('.game-area');
+
+  // Glow pulse animation
+  target.style.animation = 'glowPulse 1s ease-out';
+
+  // Create sparkle burst
+  const sparkle = document.createElement('div');
+  sparkle.classList.add('sparkle');
+
+  // Position sparkle directly over the target
+  sparkle.style.top = (target.offsetTop - 30) + 'px';
+  sparkle.style.left = (target.offsetLeft - 30) + 'px';
+
+  // Add sparkle inside the same container as the background image
+  area.appendChild(sparkle);
+
+  // Remove sparkle after animation
+  setTimeout(() => sparkle.remove(), 1000);
+
+  // Show message
+  document.getElementById("msg").style.display = "block";
+}
+
 </script>
 
 </body>
